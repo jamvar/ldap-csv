@@ -1,0 +1,9 @@
+cn,sn,mail,uid,homeDirectory,uidNumber,gidNumber
+John Doe,Doe,john@example.org,john,/home/john,10000,5000
+Jeannine Sylviane,Sylviane,jeannine@example.org,jeannine,/home/jeannine,10000,5000
+Hans Rosario,Rosario,hans@example.org,hans,/home/hans,10000,5000
+Carmina Merche,Merche,carmina@example.org,carmina,/home/carmina,10000,5000
+Rebecka Flavia,Flavia,rebecka@example.org,rebecka,/home/rebecka,10000,5000
+Delia Pablo,Pablo,delia@example.org,delia,/home/delia,10000,5000
+Soraya Sacha,Sacha,soraya@example.org,soraya,/home/soraya,10000,5000
+Goran Monica,Monica,goran@example.org,goran,/home/goran,10000,5000

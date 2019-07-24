@@ -1,12 +1,45 @@
 # Csv::Ldap
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/csv/ldap`. To experiment with that code, run `bin/console` for an interactive prompt.
+CLI tool to read or write into LDAP directory
 
-TODO: Delete this and the text above, and describe your gem
+## Pre-Requisites
+
+Install OpenLDAP server.
+
+```
+sudo apt install slapd ldap-utils
+```
+
+Configure with following
+
+```
+sudo dpkg-reconfigure slapd
+```
+
+After configuring the slapd. Create a node called 'people'.
+
+Create the following LDIF file and call it add_content.ldif:
+
+```
+dn: ou=people,dc=example,dc=org
+objectClass: organizationalUnit
+ou: people
+```
+
+Add the content by running the following command from terminal
+
+```
+ldapadd -x -D cn=admin,dc=example,dc=com -W -f add_content.ldif
+
+Enter LDAP Password: ********
+adding new entry "ou=people,dc=example,dc=org"
+```
+
+Entries will be created in a directory under `ou=people,dc=example,dc=org`
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application"s Gemfile:
 
 ```ruby
 gem 'csv-ldap'
@@ -20,9 +53,41 @@ Or install it yourself as:
 
     $ gem install csv-ldap
 
+## Features
+- Create entries in an LDAP directory from a CSV file.
+- Export entries returned from an LDAP search to a CSV file. The search filter should come from a command line argument.
+
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ ldapsearch -x -LLL -H ldap:/// -b dc=example,dc=org dn
+dn: dc=example,dc=org
+
+dn: cn=admin,dc=example,dc=org
+
+dn: ou=people,dc=example,dc=org
+```
+
+### Write in ldap from csv.
+
+```
+$ cd csv-ldap
+$ ruby samples/csv_to_ldap.rb csv-ldap/samples/ldap_data.csv
+```
+
+### Read from ldap to csv.
+
+```
+$ ruby samples/ldap_to_csv.rb output.csv
+```
+
+### Search with filter from ldap to csv.
+
+```
+$ ruby samples/ldap_to_csv_filtered.rb ldap_to_csv_filtered_output.csv John*
+
+```
+Note: This documentation is based on Ubuntu 14.04 LTS
 
 ## Development
 

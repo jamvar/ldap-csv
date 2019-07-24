@@ -1,0 +1,3 @@
+cn,sn,mail,uid,homeDirectory,uidNumber,gidNumber
+John Doe,Doe,john@example.org,john,/home/john,10000,5000
+Jeannine Sylviane,Sylviane,jeannine@example.org,jeannine,/home/jeannine,10000,5000
