@@ -1,5 +1,7 @@
 require "bundler/setup"
 require "csv/ldap"
+require "rubygems"
+require "net/ldap"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

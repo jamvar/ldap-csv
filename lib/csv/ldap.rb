@@ -4,13 +4,20 @@ require 'csv'
 
 # Csv::Ldap class
 module Csv
-  class Ldap
+  module Ldap
     attr_accessor :ldap, :errors
     HEAD_DEFAULTS = ["cn", "sn", "mail", "uid", "homeDirectory", "uidNumber", "gidNumber"].freeze
     BASE_DEFAULTS = 'ou=people, dc=example, dc=org'.freeze
+    FILE_PATH_DEFAULT = "#{Dir.home}/ldap_entry_output.csv"
 
     def initialize(args)
       @ldap = Net::LDAP.new args
+    end
+
+    def valid_headers(headers = [])
+      unless headers.all? { |header| @headers.include?(header) }
+        raise 'need headers to process the file. Fix this error first'
+      end
     end
 
     def delete(args)
@@ -22,6 +29,8 @@ module Csv
       @errors = []
 
       CSV.foreach(input_file_path, headers: true, skip_blanks: true) do |row|
+        valid_headers row.headers
+
         dn = "cn=#{row['cn']}, ou=people, dc=example, dc=org"
         attr = row.to_h
         attr['objectclass'] = ['inetOrgPerson', 'posixAccount', 'shadowAccount']
@@ -41,6 +50,7 @@ module Csv
     def export(args = {})
       @headers = args[:headers] || HEAD_DEFAULTS
       @treebase = args[:treebase] || BASE_DEFAULTS
+      @output_file_path = args[:output_file_path] || FILE_PATH_DEFAULT
       @filter ||= args[:filter]
 
       add_header
@@ -56,6 +66,10 @@ module Csv
       CSV.open(@output_file_path, 'w+', { force_quotes: false }) do |csv|
         csv << @headers
       end
+    end
+
+    def bind
+      @ldap.bind
     end
 
   end
